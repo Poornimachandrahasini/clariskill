@@ -1,13 +1,8 @@
 import streamlit as st
 import json
 
-st.set_page_config(page_title="Login | ClariSkill", layout="centered")
-
-if 'login_success' not in st.session_state:
-    st.session_state.login_success = False
-
-st.title("🔐 Welcome to ClariSkill")
-st.write("Please log in to continue or [Sign Up](signup.py)")
+st.title("🔐 Login to ClariSkill")
+st.write("Don't have an account? [Sign Up](#)", unsafe_allow_html=True)
 
 username = st.text_input("Username")
 password = st.text_input("Password", type="password")
@@ -20,12 +15,14 @@ if st.button("Login"):
         users = {}
 
     if username in users and users[username] == password:
+        st.success("Login successful! 🎉")
         st.session_state.login_success = True
         st.session_state.username = username
-        st.success("Login successful! 🎉")
+        st.session_state.page = "main"
         st.experimental_rerun()
     else:
         st.error("Invalid username or password")
 
-if st.session_state.login_success:
-    import main_page  # this will run your skill dashboard
+if st.button("Go to Sign Up"):
+    st.session_state.page = "signup"
+    st.experimental_rerun()
